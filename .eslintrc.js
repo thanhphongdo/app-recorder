@@ -16,7 +16,6 @@ module.exports = {
         'no-plusplus': ['off'],
         'class-methods-use-this': ['off'],
         'comma-dangle': ['error', 'never'],
-        'func-names': ['error', 'as-needed'],
         'no-param-reassign': ['off'],
         'prefer-destructuring': ['off'],
         'import/prefer-default-export': ['off'],
@@ -25,7 +24,9 @@ module.exports = {
         'import/no-webpack-loader-syntax': ['off'],
         'import/no-dynamic-require': ['off'],
         'global-require': ['off'],
-        'import/no-cycle': ['off']
+        'import/no-cycle': ['off'],
+        'import/no-extraneous-dependencies': ['off'],
+        'func-names': ['off']
     },
     parserOptions: {
         parser: '@typescript-eslint/parser'
