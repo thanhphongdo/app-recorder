@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 
 Vue.config.productionTip = false;
+(window as any).ipcRenderer = require('electron').ipcRenderer;
 
 new Vue({
     router,
