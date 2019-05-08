@@ -125,10 +125,11 @@ function createWindow() {
   });
 
 
-
+  let utils = require('./execute_scripts/utils.js');
   let script = require('./execute_scripts/index.js');
   script = `
             var ipcRenderer = require('electron').ipcRenderer;
+            window.utils = (${utils.toString()})();
             (${script.toString()})();`;
   script = script.replace('__webpack_require__', 'require');
 
