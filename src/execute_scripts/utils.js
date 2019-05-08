@@ -173,6 +173,26 @@ module.exports = function () {
         this.optimized = optimized || false;
     }
 
+    UTILS.xPath = function (element, isFullPath) {
+        if (element.tagName == 'HTML')
+            return '/HTML[1]';
+        if (element === document.body)
+            return '/HTML[1]/BODY[1]';
+        if (!isFullPath && element.id) {
+            return `//*[@id="${element.id}"]`;
+        }
+
+        var ix = 0;
+        var siblings = element.parentNode.childNodes;
+        for (var i = 0; i < siblings.length; i++) {
+            var sibling = siblings[i];
+            if (sibling === element)
+                return this.xPath(element.parentNode, isFullPath) + '/' + element.tagName + '[' + (ix + 1) + ']';
+            if (sibling.nodeType === 1 && sibling.tagName === element.tagName)
+                ix++;
+        }
+    }
+
     UTILS.DOMNodePathStep.prototype = {
         /**
          * @return {string}
@@ -181,5 +201,6 @@ module.exports = function () {
             return this.value;
         }
     }
+
     return UTILS
 }

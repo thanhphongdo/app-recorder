@@ -1,9 +1,8 @@
 module.exports = function () {
-    console.log(utils);
     class RecordData {
         constructor(event, command) {
-            this.target = event.target;
-            this.targets = [];
+            this.target = utils.cssPath(event.target);
+            this.targets = [utils.cssPath(event.target), utils.xPath(event.target), utils.xPath(event.target, true)];
             this.command = command;
             this.comment = '';
             this.event = event;
@@ -14,6 +13,7 @@ module.exports = function () {
             var self = this;
             return JSON.stringify({
                 id: this.id,
+                target: this.target,
                 targets: this.targets,
                 command: this.command,
                 comment: this.comment
