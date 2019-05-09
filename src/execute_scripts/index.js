@@ -6,11 +6,12 @@ module.exports = function () {
             this.command = command;
             this.comment = '';
             this.event = event;
-            this.id = (new Date()).getTime() + '_' + Math.ceil(Math.random() * 10000);
+            this.id = `${(new Date()).getTime()}_${Math.ceil(Math.random() * 10000)}`;
+            ipcRenderer.send('sendRecordingData', this.toString());
         }
 
         toString() {
-            var self = this;
+            let self = this;
             return JSON.stringify({
                 id: this.id,
                 target: this.target,
@@ -29,26 +30,26 @@ module.exports = function () {
         }
 
         eventCallback(event) {
-            var recordedFlagData = new Date().getTime();
+            let recordedFlagData = new Date().getTime();
             if (event.target.setAttribute && event.target.getAttribute && !event.target.getAttribute(recordedFlagKey)) {
                 event.target.setAttribute(recordedFlagKey, recordedFlagData);
             } else {
                 recordedFlagData = event.target.getAttribute(recordedFlagKey);
             }
-            var focusElement = document.querySelector(':focus');
+            let focusElement = document.querySelector(':focus');
             if (focusElement && focusElement.getAttribute(recordedFlagKey) == recordedFlagData) {
                 console.log('onfocus');
             }
             switch (event.type) {
-                case 'click':
-                    this.prevElement = this.currentElement;
-                    this.currentElement = new RecordData(event, 'click');
-                    this.recordDatas.push(this.currentElement);
-                    console.log(this.currentElement.toString());
-                    break;
-                default:
-                    console.log('other');
-                    break;
+            case 'click':
+                this.prevElement = this.currentElement;
+                this.currentElement = new RecordData(event, 'click');
+                this.recordDatas.push(this.currentElement);
+                console.log(this.currentElement.toString());
+                break;
+            default:
+                console.log('other');
+                break;
             }
         }
     }
@@ -57,14 +58,13 @@ module.exports = function () {
     ipcRenderer.on('async-message-reply', (event, arg) => {
         const message = `Message reply:${arg}`;
     });
-    var listEvent = ['onclick', 'onfocus', 'onkeyup'];
-    var eventHandle = new EventHandle();
-    for (var key in document) {
+    let listEvent = ['onclick', 'onfocus', 'onkeyup'];
+    let eventHandle = new EventHandle();
+    for (let key in document) {
         if (key.search('on') === 0 && listEvent.indexOf(key) >= 0) {
-            document.addEventListener(key.slice(2), function (event) {
+            document.addEventListener(key.slice(2), (event) => {
                 eventHandle.eventCallback(event);
-
-            })
+            });
         }
     }
 };

@@ -26,7 +26,16 @@ module.exports = {
         'global-require': ['off'],
         'import/no-cycle': ['off'],
         'import/no-extraneous-dependencies': ['off'],
-        'func-names': ['off']
+        'func-names': ['off'],
+        'no-use-before-define': ['off'],
+        'brace-style': ['off'],
+        'guard-for-in': ['off'],
+        'no-restricted-syntax': ['off'],
+        'no-continue': ['off'],
+        'no-underscore-dangle': ['off'],
+        'no-shadow': ['off'],
+        'implicit-arrow-linebreak': ['off'],
+        'consistent-return': ['off']
     },
     parserOptions: {
         parser: '@typescript-eslint/parser'
