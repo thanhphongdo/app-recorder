@@ -17,7 +17,9 @@ module.exports = function () {
                 target: this.target,
                 targets: this.targets,
                 command: this.command,
-                comment: this.comment
+                comment: this.comment,
+                value: this.value,
+                source: 'browser'
             });
         }
     }
@@ -39,17 +41,27 @@ module.exports = function () {
             let focusElement = document.querySelector(':focus');
             if (focusElement && focusElement.getAttribute(recordedFlagKey) == recordedFlagData) {
                 console.log('onfocus');
+            } else {
+                console.log('blur');
+                if (this.currentElement && this.currentElement.event.target && this.currentElement.event.target.tagName == 'INPUT' && this.currentElement.event.target.type == 'text') {
+                    this.currentElement.command = 'input';
+                    this.currentElement.value = this.currentElement.event.target.value;
+                    ipcRenderer.send('sendRecordingData', this.currentElement.toString());
+                    console.log('=========================');
+                    console.log(this.currentElement.toString());
+                    console.log('=========================');
+                }
             }
             switch (event.type) {
-            case 'click':
-                this.prevElement = this.currentElement;
-                this.currentElement = new RecordData(event, 'click');
-                this.recordDatas.push(this.currentElement);
-                console.log(this.currentElement.toString());
-                break;
-            default:
-                console.log('other');
-                break;
+                case 'click':
+                    this.prevElement = this.currentElement;
+                    this.currentElement = new RecordData(event, 'click');
+                    this.recordDatas.push(this.currentElement);
+                    console.log(this.currentElement.toString());
+                    break;
+                default:
+                    console.log('other');
+                    break;
             }
         }
     }

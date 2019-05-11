@@ -10,37 +10,40 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { Component, Vue } from "vue-property-decorator";
+import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
 @Component({
-    components: {
-        HelloWorld
-    }
+  components: {
+    HelloWorld
+  }
 })
 export default class Home extends Vue {
-    mounted() {
-        document.getElementsByTagName('input')[0].value = 'https://devexpress.github.io/testcafe/example/';
-        (window as any).processData = this.processData;
-    }
+  mounted() {
+    document.getElementsByTagName("input")[0].value =
+      "https://devexpress.github.io/testcafe/example/";
+    (window as any).processData = this.processData;
+    console.log(window);
+  }
 
-    openUrl() {
-        console.log((this.$refs.url as any).value);
+  openUrl() {
+    console.log((this.$refs.url as any).value);
 
-        (window as any).ipcRenderer.send(
-            'startRecording',
-            (this.$refs.url as any).value
-        );
-        (window as any).ipcRenderer.on('sendRecordingData', (
-            event: any,
-            arg: any
-        ) => {
-            console.log(arg);
-        });
-    }
+    (window as any).ipcRenderer.send(
+      "startRecording",
+      (this.$refs.url as any).value
+    );
+    (window as any).ipcRenderer.on(
+      "sendRecordingData",
+      (event: any, arg: any) => {
+        console.log(arg);
+      }
+    );
+  }
 
-    processData(data: any) {
-        console.log(data);
-    }
+  processData(data: any) {
+    console.log(data);
+    (window as any).ws.send("webRecord_" + JSON.stringify(data));
+  }
 }
 </script>
